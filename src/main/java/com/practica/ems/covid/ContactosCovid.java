@@ -58,6 +58,7 @@ public class ContactosCovid {
 		this.listaContactos = listaContactos;
 	}
 
+
 	public void loadData(String data, boolean reset) throws EmsInvalidTypeException, EmsInvalidNumberOfDataException,
 			EmsDuplicatePersonException, EmsDuplicateLocationException {
 		// borro información anterior
