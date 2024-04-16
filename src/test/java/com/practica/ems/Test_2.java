@@ -3,8 +3,6 @@ package com.practica.ems;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +23,7 @@ public class Test_2 {
 	@BeforeEach
 	void setUp() {		
 		contactosCovid = new ContactosCovid();
-		contactosCovid.loadDataFile("datos.txt", false);
+		contactosCovid.loadDataFiles("datos.txt", false);
 	}
 
 	@DisplayName("Aniade una entrada con un tipo no valido")
