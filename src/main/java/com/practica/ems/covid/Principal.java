@@ -16,9 +16,10 @@ public class Principal {
 		System.out.println(contactosCovid.getPoblacion().toString());
 		System.out.println(contactosCovid.getListaContactos().tamanioLista());
 		System.out.println(contactosCovid.getListaContactos().getPrimerNodo());
-		System.out.println(contactosCovid.getListaContactos());	
-		FechaHora ini = new FechaHora(25,5,2021,16,30);
-		FechaHora fin = new FechaHora(25,5,2021,16,30);
+
+		System.out.println(contactosCovid.getListaContactos());
+		System.out.println(contactosCovid.getListaContactos());
+
 		
 	}
 }
