@@ -88,7 +88,7 @@ public class ListaContactos {
 			NodoPosicion npAnt=null;	
 			boolean npEncontrado = false;
 			this.X(npActual,npEncontrado,npAnt,p);
-			this.Encontrado(npEncontrado,nuevo,npAnt,p);
+			//this.Encontrado(npEncontrado,nuevo,npAnt,p);
 			if(!npEncontrado) {
 				NodoPosicion npNuevo = new NodoPosicion(p.getCoordenada(),  1, null);				
 				if(nuevo.getListaCoordenadas()==null)

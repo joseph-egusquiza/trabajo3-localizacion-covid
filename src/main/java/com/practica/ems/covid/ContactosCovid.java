@@ -68,13 +68,13 @@ public class ContactosCovid {
 			this.listaContactos = new ListaContactos();
 		}
 		String datas[] = dividirEntrada(data);
-		dealData(datas);
+		this.dealData(datas);
 	}
 
 	public void loadDataFiles(String fichero, boolean reset) {
 		String datas[] = null, data = null;
 		FileReader fr = null;
-		readDataFiles(fichero, reset, fr, datas, data);
+		this.readDataFiles(fichero, reset, fr, datas, data);
 		
 	}
 
@@ -95,7 +95,7 @@ public class ContactosCovid {
 			
 			while ((data = br.readLine()) != null) {
 				datas = dividirEntrada(data.trim());
-				dealData(datas);
+				this.dealData(datas);
 			}
 
 		} catch (Exception e) {
@@ -121,7 +121,7 @@ public class ContactosCovid {
 	private void dealData(String datas[]) throws EmsInvalidTypeException, EmsInvalidNumberOfDataException, EmsDuplicatePersonException, EmsDuplicateLocationException{
 		for (String linea: datas){
 			String datos[] = this.dividirLineaData(linea);
-			clasifyData(datos);
+			this.clasifyData(datos);
 		}
 	}
 
@@ -222,15 +222,23 @@ public class ContactosCovid {
 		for (int i = 1; i < Constantes.MAX_DATOS_PERSONA; i++) {
 			String s = data[i];
 			switch (i) {
-			case 1:
-				persona.setDocumento(s);
-				break;
-			case 2:
-				persona.setNombre(s);
-				break;
-			case 3:
-				persona.setApellidos(s);
-				break;
+				case 1:
+					persona.setDocumento(s);
+					break;
+				case 2:
+					persona.setNombre(s);
+					break;
+				case 3:
+					persona.setApellidos(s);
+					break;
+				default:
+					this.datosPersona(s, persona, i);
+			}
+		}
+		return persona;
+	}
+	private void datosPersona(String s, Persona persona, int i){
+		switch (i){
 			case 4:
 				persona.setEmail(s);
 				break;
@@ -243,9 +251,7 @@ public class ContactosCovid {
 			case 7:
 				persona.setFechaNacimiento(parsearFecha(s));
 				break;
-			}
 		}
-		return persona;
 	}
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
