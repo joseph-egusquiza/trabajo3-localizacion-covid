@@ -146,8 +146,7 @@ public class ListaContactos {
 		return cont;
 	}
 	
-	
-	
+
 	public int numNodosCoordenadaEntreDosInstantes(FechaHora inicio, FechaHora fin) {
 		if(this.size==0)
 			return 0;
