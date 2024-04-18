@@ -63,9 +63,14 @@ public class ListaContactos {
 		}
 	}
 
-	private void insertarNuevoNodoEnLaLista(NodoTemporal aux, NodoTemporal ant, PosicionPersona p){
+	private NodoTemporal declararNodoNuevo(PosicionPersona p){
 		NodoTemporal nuevo = new NodoTemporal();
 		nuevo.setFecha(p.getFechaPosicion());
+		return nuevo;
+	}
+
+	private void insertarNuevoNodoEnLaLista(NodoTemporal aux, NodoTemporal ant, PosicionPersona p){
+		NodoTemporal nuevo = this.declararNodoNuevo(p);
 		NodoPosicion npActual = nuevo.getListaCoordenadas();
 		NodoPosicion npAnt=null;
 		boolean npEncontrado = false;

@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.practica.excecption.EmsDuplicateLocationException;
 import com.practica.excecption.EmsDuplicatePersonException;
@@ -68,13 +69,13 @@ public class ContactosCovid {
 			this.listaContactos = new ListaContactos();
 		}
 		String datas[] = dividirEntrada(data);
-		dealData(datas);
+		this.dealData(datas);
 	}
 
 	public void loadDataFiles(String fichero, boolean reset) {
 		String datas[] = null, data = null;
 		FileReader fr = null;
-		readDataFiles(fichero, reset, fr, datas, data);
+		this.readDataFiles(fichero, reset, fr, datas, data);
 		
 	}
 
@@ -95,7 +96,7 @@ public class ContactosCovid {
 			
 			while ((data = br.readLine()) != null) {
 				datas = dividirEntrada(data.trim());
-				dealData(datas);
+				this.dealData(datas);
 			}
 
 		} catch (Exception e) {
@@ -121,7 +122,7 @@ public class ContactosCovid {
 	private void dealData(String datas[]) throws EmsInvalidTypeException, EmsInvalidNumberOfDataException, EmsDuplicatePersonException, EmsDuplicateLocationException{
 		for (String linea: datas){
 			String datos[] = this.dividirLineaData(linea);
-			clasifyData(datos);
+			this.clasifyData(datos);
 		}
 	}
 
@@ -228,33 +229,22 @@ public class ContactosCovid {
 		persona.setFechaNacimiento(parsearFecha(data[7]));
 		return persona;
 	}
+	
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
 		PosicionPersona posicionPersona = new PosicionPersona();
 		String fecha = null, hora;
 		float latitud = 0, longitud;
-		for (int i = 1; i < Constantes.MAX_DATOS_LOCALIZACION; i++) {
-			String s = data[i];
-			switch (i) {
-			case 1:
-				posicionPersona.setDocumento(s);
-				break;
-			case 2:
-				fecha = data[i];
-				break;
-			case 3:
-				hora = data[i];
-				posicionPersona.setFechaPosicion(parsearFecha(fecha, hora));
-				break;
-			case 4:
-				latitud = Float.parseFloat(s);
-				break;
-			case 5:
-				longitud = Float.parseFloat(s);
-				posicionPersona.setCoordenada(new Coordenada(latitud, longitud));
-				break;
-			}
-		}
+
+		posicionPersona.setDocumento(data[1]);
+		fecha = data[2];
+		hora = data[3];
+		posicionPersona.setFechaPosicion(parsearFecha(fecha, hora));
+
+		latitud = Float.parseFloat(data[4]);
+		longitud = Float.parseFloat(data[5]);
+		posicionPersona.setCoordenada(new Coordenada(latitud, longitud));
+
 		return posicionPersona;
 	}
 	
@@ -269,16 +259,15 @@ public class ContactosCovid {
 	}
 	
 	private FechaHora parsearFecha (String fecha, String hora) {
-		int dia, mes, anio;
-		String[] valores = fecha.split("\\/");
-		dia = Integer.parseInt(valores[0]);
-		mes = Integer.parseInt(valores[1]);
-		anio = Integer.parseInt(valores[2]);
 		int minuto, segundo;
-		valores = hora.split("\\:");
+		String[] valores = hora.split("\\:");
+		FechaHora fechaHora = parsearFecha(fecha);
+
 		minuto = Integer.parseInt(valores[0]);
 		segundo = Integer.parseInt(valores[1]);
-		FechaHora fechaHora = new FechaHora(dia, mes, anio, minuto, segundo);
+
+		fechaHora = new FechaHora(fechaHora.getFecha().getDia(),
+				fechaHora.getFecha().getMes(), fechaHora.getFecha().getAnio(), minuto, segundo);
 		return fechaHora;
 	}
 }
