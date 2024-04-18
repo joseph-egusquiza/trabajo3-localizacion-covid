@@ -219,6 +219,7 @@ public class ContactosCovid {
 
 	private Persona crearPersona(String[] data) {
 		Persona persona = new Persona();
+<<<<<<< HEAD
 		for (int i = 1; i < Constantes.MAX_DATOS_PERSONA; i++) {
 			String s = data[i];
 			switch (i) {
@@ -252,6 +253,16 @@ public class ContactosCovid {
 				persona.setFechaNacimiento(parsearFecha(s));
 				break;
 		}
+=======
+		persona.setDocumento(data[1]);
+		persona.setNombre(data[2]);
+		persona.setApellidos(data[3]);
+		persona.setEmail(data[4]);
+		persona.setDireccion(data[5]);
+		persona.setCp(data[6]);
+		persona.setFechaNacimiento(parsearFecha(data[7]));
+		return persona;
+>>>>>>> joseph
 	}
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
