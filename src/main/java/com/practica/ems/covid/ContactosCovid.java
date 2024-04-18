@@ -69,13 +69,13 @@ public class ContactosCovid {
 			this.listaContactos = new ListaContactos();
 		}
 		String datas[] = dividirEntrada(data);
-		dealData(datas);
+		this.dealData(datas);
 	}
 
 	public void loadDataFiles(String fichero, boolean reset) {
 		String datas[] = null, data = null;
 		FileReader fr = null;
-		readDataFiles(fichero, reset, fr, datas, data);
+		this.readDataFiles(fichero, reset, fr, datas, data);
 		
 	}
 
@@ -96,7 +96,7 @@ public class ContactosCovid {
 			
 			while ((data = br.readLine()) != null) {
 				datas = dividirEntrada(data.trim());
-				dealData(datas);
+				this.dealData(datas);
 			}
 
 		} catch (Exception e) {
@@ -119,10 +119,10 @@ public class ContactosCovid {
 	 * Distributes the data into lines to be clasified
 	 * @param datas String with the data to be distributed
 	 */
-	private void dealData(String datas[]){
+	private void dealData(String datas[]) throws EmsInvalidTypeException, EmsInvalidNumberOfDataException, EmsDuplicatePersonException, EmsDuplicateLocationException{
 		for (String linea: datas){
 			String datos[] = this.dividirLineaData(linea);
-			clasifyData(datos);
+			this.clasifyData(datos);
 		}
 	}
 
@@ -131,30 +131,25 @@ public class ContactosCovid {
 	 * in case it has an error
 	 * @param datos
 	 */
-	public void clasifyData(String datos[]){
-		try {
-			if (!datos[0].equals("PERSONA") && !datos[0].equals("LOCALIZACION")) {
-				throw new EmsInvalidTypeException();
-			}
-			if (datos[0].equals("PERSONA")) {
-				if (datos.length != Constantes.MAX_DATOS_PERSONA) {
-					throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
-				}
-				this.poblacion.addPersona(this.crearPersona(datos));
-			}
-			if (datos[0].equals("LOCALIZACION")) {
-				if (datos.length != Constantes.MAX_DATOS_LOCALIZACION) {
-					throw new EmsInvalidNumberOfDataException(
-							"El número de datos para LOCALIZACION es menor de 6");
-				}
-				PosicionPersona pp = this.crearPosicionPersona(datos);
-				this.localizacion.addLocalizacion(pp);
-				this.listaContactos.insertarNodoTemporal(pp);
-			}
 
+	public void clasifyData(String datos[]) throws EmsInvalidTypeException, EmsInvalidNumberOfDataException, EmsDuplicatePersonException, EmsDuplicateLocationException{
+		if (!datos[0].equals("PERSONA") && !datos[0].equals("LOCALIZACION")) {
+			throw new EmsInvalidTypeException();
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+		if (datos[0].equals("PERSONA")) {
+			if (datos.length != Constantes.MAX_DATOS_PERSONA) {
+				throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
+			}
+			this.poblacion.addPersona(this.crearPersona(datos));
+		}
+		if (datos[0].equals("LOCALIZACION")) {
+			if (datos.length != Constantes.MAX_DATOS_LOCALIZACION) {
+				throw new EmsInvalidNumberOfDataException(
+						"El número de datos para LOCALIZACION es menor de 6");
+			}
+			PosicionPersona pp = this.crearPosicionPersona(datos);
+			this.localizacion.addLocalizacion(pp);
+			this.listaContactos.insertarNodoTemporal(pp);
 		}
 	}
 
@@ -225,61 +220,31 @@ public class ContactosCovid {
 
 	private Persona crearPersona(String[] data) {
 		Persona persona = new Persona();
-		for (int i = 1; i < Constantes.MAX_DATOS_PERSONA; i++) {
-			String s = data[i];
-			switch (i) {
-			case 1:
-				persona.setDocumento(s);
-				break;
-			case 2:
-				persona.setNombre(s);
-				break;
-			case 3:
-				persona.setApellidos(s);
-				break;
-			case 4:
-				persona.setEmail(s);
-				break;
-			case 5:
-				persona.setDireccion(s);
-				break;
-			case 6:
-				persona.setCp(s);
-				break;
-			case 7:
-				persona.setFechaNacimiento(parsearFecha(s));
-				break;
-			}
-		}
+		persona.setDocumento(data[1]);
+		persona.setNombre(data[2]);
+		persona.setApellidos(data[3]);
+		persona.setEmail(data[4]);
+		persona.setDireccion(data[5]);
+		persona.setCp(data[6]);
+		persona.setFechaNacimiento(parsearFecha(data[7]));
 		return persona;
 	}
+	
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
 		PosicionPersona posicionPersona = new PosicionPersona();
 		String fecha = null, hora;
 		float latitud = 0, longitud;
-		for (int i = 1; i < Constantes.MAX_DATOS_LOCALIZACION; i++) {
-			String s = data[i];
-			switch (i) {
-			case 1:
-				posicionPersona.setDocumento(s);
-				break;
-			case 2:
-				fecha = data[i];
-				break;
-			case 3:
-				hora = data[i];
-				posicionPersona.setFechaPosicion(parsearFecha(fecha, hora));
-				break;
-			case 4:
-				latitud = Float.parseFloat(s);
-				break;
-			case 5:
-				longitud = Float.parseFloat(s);
-				posicionPersona.setCoordenada(new Coordenada(latitud, longitud));
-				break;
-			}
-		}
+
+		posicionPersona.setDocumento(data[1]);
+		fecha = data[2];
+		hora = data[3];
+		posicionPersona.setFechaPosicion(parsearFecha(fecha, hora));
+
+		latitud = Float.parseFloat(data[4]);
+		longitud = Float.parseFloat(data[5]);
+		posicionPersona.setCoordenada(new Coordenada(latitud, longitud));
+
 		return posicionPersona;
 	}
 	
