@@ -11,7 +11,7 @@ public class Principal {
 	
 	public static void main(String[] args) throws EmsDuplicatePersonException, EmsDuplicateLocationException, EmsInvalidTypeException, EmsInvalidNumberOfDataException {
 		ContactosCovid contactosCovid = new ContactosCovid();
-		contactosCovid.loadDataFile("datos2.txt", false);
+		contactosCovid.loadDataFiles("datos2.txt", false);
 		System.out.println(contactosCovid.getLocalizacion().toString());
 		System.out.println(contactosCovid.getPoblacion().toString());
 		System.out.println(contactosCovid.getListaContactos().tamanioLista());

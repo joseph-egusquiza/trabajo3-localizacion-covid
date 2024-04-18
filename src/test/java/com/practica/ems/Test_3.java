@@ -12,8 +12,6 @@ import com.practica.excecption.EmsDuplicateLocationException;
 import com.practica.excecption.EmsDuplicatePersonException;
 import com.practica.excecption.EmsInvalidNumberOfDataException;
 import com.practica.excecption.EmsInvalidTypeException;
-import com.practica.excecption.EmsLocalizationNotFoundException;
-import com.practica.excecption.EmsPersonNotFoundException;
 import com.practica.genericas.FechaHora;
 
 public class Test_3 {
@@ -22,7 +20,7 @@ public class Test_3 {
 	@BeforeEach
 	void setUp() {		
 		contactosCovid = new ContactosCovid();
-		contactosCovid.loadDataFile("datos2.txt", false);
+		contactosCovid.loadDataFiles("datos2.txt", false);
 	}
 	@DisplayName("Comprobamos que se genera la lista de contactos")
 	@Test
